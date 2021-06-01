@@ -1,0 +1,28 @@
+{
+  "codigo": 200,
+  "mensagem": "Acesso Liberado!",
+  "totalCount": 1,
+  "resposta": {
+    "token": "fff551d2-84f3-443c-ab55-89979e1af794",
+    "usuario": {
+      "idUsuario": 32977,
+      "nome": "Termaco Logistica",
+      "email": "ti@termaco.com.br",
+      "tipo_usuario": "PADRAO",
+      "primeiroAcesso": false
+    },
+    "cliente": {
+      "idCliente": 112,
+      "nome": "mundial"
+    },
+    "gestao": {
+      "idUsuario": 32977,
+      "tipoGestao": "TRANSPORTADORA",
+      "tipoAcaoEmbarque": "OCORRENCIA_CONFIRMAR",
+      "idsReferencia": [
+        189
+      ],
+      "idsTipoOcorrencia": []
+    }
+  }
+}

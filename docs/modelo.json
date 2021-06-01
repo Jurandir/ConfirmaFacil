@@ -1,0 +1,106 @@
+[
+  {
+    "embarque": {
+      "numero": "NUMERO_DA_NOTA",
+      "serie": "SERIE_DA_NOTA",
+      "chave": "CHAVE_DA_NOTA",
+      "dtEmissao": "DD-MM-AAAA ou DD/MM/AAAA",
+      "dtEmbarque": "DD-MM-AAAA ou DD/MM/AAAA",
+      "dtEntrega": "DD-MM-AAAA ou DD/MM/AAAA",
+      "hrEntrega": "HH:MM:SS",
+      "dtPrevisao": "DD-MM-AAAA ou DD/MM/AAAA",
+      "dtPrevisaoDestinatario": "DD-MM-AAAA ou DD/MM/AAAA",
+      "valor": "1.000,00 ou 1000.00",
+      "tipoOperacao": "0 (ENTRADA) ou 1 (SAÍDA)",
+      "tipoEnvio": "Texto - Ex: convencional, expresso, PAC, SEDEX, etc."
+    },
+    "embarcador": {
+      "cnpj": "CNPJ"
+    },
+    "destinatario": {
+      "nome": "NOME",
+      "cnpj": "CNPJ",
+      "celular": "CELULAR_DO_DESTINATARIO",
+      "email": "EMAIL_DO_DESTINATARIO",
+      "endereco": {
+        "cep": "CEP_DO_ENDEREÇO",
+        "uf": "UF_DO_ENDERECO",
+        "cidade": "CIDADE_DO_ENDERECO",
+        "logradouro": "LOGRADOURO_DO_ENDERECO",
+        "numero": "NUMERO_DO_ENDERECO",
+        "latitude": "LATITUDE_DO_ENDERECO",
+        "longitude": "LONGITUDE_DO_ENDERECO"
+      }
+    },
+    "transportadora": {
+      "nome": "NOME",
+      "cnpj": "CNPJ",
+      "celular": "CELULAR_DA_TRANSPORTADORA"
+    },
+    "pedido": {
+      "numero": "NUMERO_DO_PEDIDO",
+      "dtEmissao": "DD-MM-AAAA ou DD/MM/AAAA",
+      "horaEmissao": "HH:MM:SS",
+      "dtAgendamento": "DD-MM-AAAA ou DD/MM/AAAA",
+      "horaAgendamento": "HH:MM:SS"
+    },
+    "trecho": {
+      "ordem": "ORDEM_DO_TRECHO",
+      "dtInicio": "DD-MM-AAAA ou DD/MM/AAAA",
+      "dtFim": "DD-MM-AAAA ou DD/MM/AAAA",
+      "dtPrevisao": "DD-MM-AAAA ou DD/MM/AAAA",
+      "enderecoOrigem": {
+        "cep": "CEP_DO_ENDEREÇO",
+        "uf": "UF_DO_ENDERECO",
+        "cidade": "CIDADE_DO_ENDERECO",
+        "logradouro": "LOGRADOURO_DO_ENDERECO",
+        "numero": "NUMERO_DO_ENDERECO",
+        "latitude": "LATITUDE_DO_ENDERECO",
+        "longitude": "LONGITUDE_DO_ENDERECO"
+      },
+      "enderecoDestino": {
+        "cep": "CEP_DO_ENDEREÇO",
+        "uf": "UF_DO_ENDERECO",
+        "cidade": "CIDADE_DO_ENDERECO",
+        "logradouro": "LOGRADOURO_DO_ENDERECO",
+        "numero": "NUMERO_DO_ENDERECO",
+        "latitude": "LATITUDE_DO_ENDERECO",
+        "longitude": "LONGITUDE_DO_ENDERECO"
+      },
+      "transportadora": {
+        "nome": "NOME",
+        "cnpj": "CNPJ",
+        "celular": "CELULAR_DA_TRANSPORTADORA"
+      },
+      "idEmbarque": 0
+    },
+    "ocorrencia": {
+      "tipoEntrega": "CODIGO_DA_OCORRENCIA",
+      "descricaoTipoEntrega": "string",
+      "dtOcorrencia": "DD-MM-AAAA ou DD/MM/AAAA",
+      "hrOcorrencia": "HH:MM:SS ou HH:MM",
+      "comentario": "COMENTARIO",
+      "dataAgendamento": "DD-MM-AAAA ou DD/MM/AAAA",
+      "horaAgendamento": "HH:MM:SS",
+      "fotos": [
+        "LINK_DA_FOTO",
+        "LINK_DA_FOTO",
+        "..."
+      ],
+      "documentoRecebedor": "DOCUMENTO_RECEBEDOR",
+      "nomeRecebedor": "NOME_RECEBEDOR"
+    },
+    "itens": [
+      {
+        "codigo": "CODIGO_DO_ITEM",
+        "quantidade": "1 ou 1,5",
+        "descricao": "DESCRIÇÃO_DO_ITEM"
+      }
+    ],
+    "tags": [
+      "TAG",
+      "TAG",
+      "..."
+    ]
+  }
+]
