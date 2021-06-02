@@ -1,0 +1,53 @@
+BEGIN
+    UPDATE CF
+    SET DT_ENTREGA = CNH.DATAENTREGA
+    FROM SIC.dbo.CONFIRMAFACIL CF
+    JOIN CARGASSQL.dbo.CNH        ON CNH.EMP_CODIGO = SUBSTRING(CF.CTRC,1,3) AND 
+                                     CNH.SERIE      = SUBSTRING(CF.CTRC,4,1)	AND 
+                                     CNH.CTRC       = SUBSTRING(CF.CTRC,5,10)
+    WHERE
+    CF.DT_ENTREGA IS NULL AND CNH.DATAENTREGA IS NOT NULL
+END   
+;
+BEGIN TRY
+    BEGIN TRANSACTION
+
+    BEGIN
+        ;
+        INSERT INTO SIC.dbo.CONFIRMAFACILOCORRENCIA
+          ( CONFIRMAFACIL_ID, OCORRENCIA_ID, OCORRENCIA_NOME, OCORRENCIA_DATA, RECEBEDOR_NOME, RECEBEDOR_DOC )
+
+        SELECT
+          CF.ID                                                    AS CONFIRMAFACIL_ID,
+          001                                                      AS OCORRENCIA_ID,
+          'ENTREGA REALIZADA NORMALMENTE'                          AS OCORRENCIA_NOME,
+          CF.DT_ENTREGA                                            AS OCORRENCIA_DATA,
+          UPPER( ISNULL(IME.RECEBEDOR,'ENCARREGADO RESPONSÁVEL') ) AS RECEBEDOR_NOME,
+          'N.INFO'                                                 AS RECEBEDOR_DOC
+        FROM SIC.dbo.CONFIRMAFACIL CF
+          JOIN      CARGASSQL.dbo.CNH ON CNH.EMP_CODIGO=SUBSTRING(CF.CTRC,1,3) AND CNH.SERIE = SUBSTRING(CF.CTRC,4,1) AND CNH.CTRC = SUBSTRING(CF.CTRC,5,10)
+          LEFT JOIN CARGASSQL.dbo.IME ON IME.CNH_CTRC  = CNH.CTRC	           AND IME.CNH_SERIE  = CNH.SERIE	    AND IME.EMP_CODIGO_CNH = CNH.EMP_CODIGO
+        WHERE FASE_ID <= 4 AND CF.DT_ENTREGA IS NOT NULL
+
+        ;
+        UPDATE SIC.dbo.CONFIRMAFACIL
+          SET FASE_ID = 5,
+              DT_UPDATE = CURRENT_TIMESTAMP
+        WHERE FASE_ID <= 4 AND DT_ENTREGA IS NOT NULL
+        ;
+    END
+
+    COMMIT TRANSACTION
+
+END TRY
+BEGIN CATCH
+    IF @@TRANCOUNT > 0
+        ROLLBACK TRANSACTION
+
+    DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE()
+    DECLARE @ErrorSeverity INT = ERROR_SEVERITY()
+    DECLARE @ErrorState INT = ERROR_STATE()
+
+    RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+END CATCH
+;

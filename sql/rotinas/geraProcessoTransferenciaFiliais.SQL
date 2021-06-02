@@ -4,7 +4,7 @@ BEGIN
     FROM SIC.dbo.CONFIRMAFACIL CF
     JOIN CARGASSQL.dbo.CNH        ON CNH.EMP_CODIGO = SUBSTRING(CF.CTRC,1,3) AND 
                                      CNH.SERIE      = SUBSTRING(CF.CTRC,4,1)	AND 
-                                     CNH.CTRC       = SUBSTRING(CF.CTRC,5,103)
+                                     CNH.CTRC       = SUBSTRING(CF.CTRC,5,10)
     WHERE
     DT_EMBARQUE IS NULL AND CNH.DATAEMBARQUE IS NOT NULL
 END   

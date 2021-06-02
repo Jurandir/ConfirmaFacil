@@ -3,6 +3,8 @@ const initNFs           = require('../metodsDB/initNFs')
 const initTransporte    = require('../metodsDB/initTransporte')
 const initTransferencia = require('../metodsDB/initTransferencia')
 const initChegada       = require('../metodsDB/initChegada')
+const initEmRota        = require('../metodsDB/initEmRota')
+const initEntrega       = require('../metodsDB/initEntrega')
 
 const robot = async (cli,cfg) =>{
 
@@ -41,6 +43,14 @@ const robot = async (cli,cfg) =>{
     // CHEGADA NA CIDADE OU FILIAL DE DESTINO
     let retInitChegada = await initChegada()
      console.log(moment().format(),'- retInitChegada:',retInitChegada)
+
+    // EM ROTA PARA ENTREGA
+    let retInitEmRota = await initEmRota()
+     console.log(moment().format(),'- retInitEmRota:',retInitEmRota)
+
+    // ENTREGA REALIZADA NORMALMENTE
+    let retInitEntrega = await initEntrega()
+     console.log(moment().format(),'- retInitEntrega:',retInitEntrega)
 
 }
 

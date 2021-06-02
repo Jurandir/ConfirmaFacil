@@ -4,7 +4,7 @@ BEGIN
     FROM SIC.dbo.CONFIRMAFACIL CF
     JOIN CARGASSQL.dbo.CNH        ON CNH.EMP_CODIGO = SUBSTRING(CF.CTRC,1,3) AND 
                                      CNH.SERIE      = SUBSTRING(CF.CTRC,4,1)	AND 
-                                     CNH.CTRC       = SUBSTRING(CF.CTRC,5,103)
+                                     CNH.CTRC       = SUBSTRING(CF.CTRC,5,10)
     WHERE
     DT_CHEGADA IS NULL AND CNH.DATACHEGADA IS NOT NULL
 END   
@@ -20,7 +20,7 @@ BEGIN TRY
           CF.ID                                           AS CONFIRMAFACIL_ID,
           098                                             AS OCORRENCIA_ID,
           'CHEGADA NA CIDADE OU FILIAL DE DESTINO'        AS OCORRENCIA_NOME,
-          CF.DT_EMBARQUE                                  AS OCORRENCIA_DATA
+          CF.DT_CHEGADA                                   AS OCORRENCIA_DATA
         FROM SIC.dbo.CONFIRMAFACIL CF
           JOIN CARGASSQL.dbo.CNH ON CNH.EMP_CODIGO=SUBSTRING(CF.CTRC,1,3) AND CNH.SERIE = SUBSTRING(CF.CTRC,4,1) AND CNH.CTRC = SUBSTRING(CF.CTRC,5,10)
         WHERE FASE_ID <= 2 AND CF.DT_CHEGADA IS NOT NULL
