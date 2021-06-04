@@ -5,6 +5,7 @@ const initTransferencia = require('../metodsDB/initTransferencia')
 const initChegada       = require('../metodsDB/initChegada')
 const initEmRota        = require('../metodsDB/initEmRota')
 const initEntrega       = require('../metodsDB/initEntrega')
+const initOcorrencias   = require('../metodsDB/initOcorrencias')
 
 const robot = async (cli,cfg) =>{
 
@@ -25,32 +26,43 @@ const robot = async (cli,cfg) =>{
     if(cli.count==1){
         clearInterval(cli.fnTime);
         console.log('FIM - ',cli.nome)
+        return 
     }
     cli.count++
 
     // CAPTURA NFs 
     let retInitNFs = await initNFs(cli)
-     console.log(moment().format(),'- retInitNFs:',retInitNFs)
+     console.log(moment().format(),'- (CAPTURA NFs) - retInitNFs:',retInitNFs)
 
     // PROCESSO DE TRANSPORTE INICIADO
     let retInitTransporte = await initTransporte()
-     console.log(moment().format(),'- retInitTransporte:',retInitTransporte)
+     console.log(moment().format(),'- (PROCESSO DE TRANSPORTE INICIADO) - retInitTransporte:',retInitTransporte)
 
     // EM PROCESSO DE TRANSFERENCIA ENTRE AS FILIAIS
     let retInitTransferencia = await initTransferencia()
-     console.log(moment().format(),'- retInitTransferencia:',retInitTransferencia)
+     console.log(moment().format(),'- (EM PROCESSO DE TRANSFERENCIA ENTRE AS FILIAIS) - retInitTransferencia:',retInitTransferencia)
 
     // CHEGADA NA CIDADE OU FILIAL DE DESTINO
     let retInitChegada = await initChegada()
-     console.log(moment().format(),'- retInitChegada:',retInitChegada)
+     console.log(moment().format(),'- (CHEGADA NA CIDADE OU FILIAL DE DESTINO) - retInitChegada:',retInitChegada)
 
     // EM ROTA PARA ENTREGA
     let retInitEmRota = await initEmRota()
-     console.log(moment().format(),'- retInitEmRota:',retInitEmRota)
+     console.log(moment().format(),'- (EM ROTA PARA ENTREGA) - retInitEmRota:',retInitEmRota)
 
-    // ENTREGA REALIZADA NORMALMENTE
+    // OCORRENCIAS MANUAIS
+    let retInitOcorrencias = await initOcorrencias()
+     console.log(moment().format(),'- (OCORRENCIAS MANUAIS) - retInitOcorrencias:',retInitOcorrencias)
+     if(retInitOcorrencias.rowsAffected>0) {
+        cli.count--
+        return 
+     }
+
+     // ENTREGA REALIZADA NORMALMENTE
     let retInitEntrega = await initEntrega()
-     console.log(moment().format(),'- retInitEntrega:',retInitEntrega)
+     console.log(moment().format(),'- (ENTREGA REALIZADA NORMALMENTE) - retInitEntrega:',retInitEntrega)
+
+     return 
 
 }
 
