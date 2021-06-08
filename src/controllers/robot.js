@@ -6,6 +6,12 @@ const initChegada       = require('../metodsDB/initChegada')
 const initEmRota        = require('../metodsDB/initEmRota')
 const initEntrega       = require('../metodsDB/initEntrega')
 const initOcorrencias   = require('../metodsDB/initOcorrencias')
+const registraNF        = require('../models/registraNF')
+const transfereNF       = require('../models/transfereNF')
+const chegadaNF         = require('../models/chegadaNF')
+const rotaEntrega       = require('../models/rotaEntrega')
+const entregaNF         = require('../models/entregaNF')
+const ocorrencias       = require('../models/ocorrencias')
 
 const robot = async (cli,cfg) =>{
 
@@ -16,11 +22,7 @@ const robot = async (cli,cfg) =>{
     // 5 - 001 - ENTREGA REALIZADA NORMALMENTE
     // 6 - 999 - COMPROVANTE DE ENTREGA
     // 9 - XXX - FINALIZADO
-
-    
-    // console.log('CFG:',cfg)
-    // console.log('CLI:',cli)
-
+   
     // PRINT EXECUÇÃO
     console.log(moment().format(),'- Execução:',cli.count)
     if(cli.count==1){
@@ -29,6 +31,26 @@ const robot = async (cli,cfg) =>{
         return 
     }
     cli.count++
+
+    let retRegistraNF = await registraNF(cfg,cli)
+    console.log(moment().format(),'- (API - REGISTRO NF) - retRegistraNF:',retRegistraNF)
+
+    let retTransfereNF = await transfereNF(cfg,cli)
+    console.log(moment().format(),'- (API - TRANSFERENCIA ENTRE FILIAIS) - retTransfereNF:',retTransfereNF)
+
+    let retChegadaNF = await chegadaNF(cfg,cli)
+    console.log(moment().format(),'- (API - CHEGADA NA FILIAL) - retChegadaNF:',retChegadaNF)
+
+    let retRotaEntrega = await rotaEntrega(cfg,cli)
+    console.log(moment().format(),'- (API - EM ROTA DE ENTREGA) - retRotaEntrega:',retRotaEntrega)
+
+    let retOcorrencias = await ocorrencias(cfg,cli)
+    console.log(moment().format(),'- (API - OCORRÊNCIAS MANUAIS) - retOcorrencias:',retOcorrencias)
+
+    let retEntregaNF = await entregaNF(cfg,cli)
+    console.log(moment().format(),'- (API - REGISTRO DE ENTREGA) - retEntregaNF:',retEntregaNF)
+
+    return
 
     // CAPTURA NFs 
     let retInitNFs = await initNFs(cli)
