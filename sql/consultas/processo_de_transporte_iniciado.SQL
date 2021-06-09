@@ -1,5 +1,5 @@
 -- PROCESSO DE TRANSPORTE INICIADO
-SELECT TOP 1
+SELECT TOP 50
     -- ROW_NUMBER() OVER(ORDER BY CO.DT_CREATE ASC) AS Row#,
 	CO.ID                                        AS FLAG_ID,
 	CF.NUMERO                                    AS embarque_numero,

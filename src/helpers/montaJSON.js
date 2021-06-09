@@ -1,12 +1,17 @@
 const montaJSON = async (lista,base) => {
     let dados   = {}
     let retorno = []
-
     const setVar = async (campo,valor) => {
         if(campo=='FLAG_ID') {return}
         if(valor==null) {return}
         let chave  = `${campo}`.split('_')
         let chaves = chave.length
+
+        if(campo=='ocorrencia_fotos') {
+            chaves=0
+            dados[chave[0]][chave[1]] = [valor]
+        }
+
         if(chaves==1) { dados[chave[0]] = valor }
         if(chaves==2) { dados[chave[0]][chave[1]] = valor }
         if(chaves==3) { dados[chave[0]][chave[1]][chave[2]] = valor }
@@ -21,9 +26,7 @@ const montaJSON = async (lista,base) => {
         for await (let campo of campos) {
             await setVar( campo , obj[ campo ] )
         } 
-        
         retorno.push(dados)
-
     } 
 
     return retorno

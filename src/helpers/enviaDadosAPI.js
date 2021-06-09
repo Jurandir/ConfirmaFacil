@@ -11,10 +11,14 @@ const enviaDadosAPI = async (cfg,cli,base,sql) => {
     let UPDATE   = {success: false, rowsAffected: 0}
     try {
         ROWS      = await sqlQuery( sql )
-        LIST      = ROWS>0   ? await montaJSON( ROWS, base )    : 0
-        EMBARQUE  = LIST>0   ? await embarque( cfg, cli, LIST ) : {success: false}
-        UPDATE    = EMBARQUE ? await updFlagsEnvio( ROWS )      : {success: false, rowsAffected: 0}
-        resposta = { success: UPDATE.success, message: '',  rowsAffected: UPDATE.rowsAffected }
+        LIST      = ROWS.length >0   ? await montaJSON( ROWS, base )    : []
+        EMBARQUE  = LIST.length >0   ? await embarque( cfg, cli, LIST ) : {success: false, message:'embarque' ,rowsAffected: 0} 
+        UPDATE    = EMBARQUE.success ? await updFlagsEnvio( ROWS )      : {success: false, message:'updFlagsEnvio' ,rowsAffected: 0}
+        
+        let msg = `Query:${ROWS.length} JSON:${LIST.length} API:${EMBARQUE.success} Flag:${UPDATE.success}`
+
+        resposta  = { success: UPDATE.success, message: msg,  rowsAffected: UPDATE.rowsAffected }
+
     } catch (err) {
         resposta = { success: false, message: err.message, rowsAffected:-1 }
     }    

@@ -9,6 +9,10 @@ const updFlagsEnvio = async (dados) => {
                 WHERE ID IN (${IDs})`
     try {
 
+        if(!IDs) {
+            return { success: false, message: 'updFlags - Sem Dados', rowsAffected: 0 }     
+        }
+
         let result = await sqlExec(sql)         
         if( result.success ) {
             console.log(moment().format(),'- SUCCESS - ENVIO p/ API, IDs:',IDs )
