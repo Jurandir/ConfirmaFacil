@@ -18,6 +18,7 @@ const config  = {
     loginURL: process.env.URL_LOGIN, 
     embarqueURL: process.env.URL_EMBARQUE , 
     comprovanteURL: process.env.URL_COMPROVANTE,
+    debug: process.env.DEBUG,
     user: process.env.USUARIO,
     pwd: process.env.SENHA
 }
@@ -29,17 +30,18 @@ console.log(titulo)
 
 function setToken (loopToken) {
     loopToken++
-    setTimeout(setToken, config.validade, loopToken ) 
+    let uptime = Math.ceil(process.uptime()-1)
+    setTimeout(setToken, config.validade + config.time, loopToken ) 
     clientes.forEach(item=>{
         login(config).then( ret => {
             if(ret.success) {
                 item.login = ret.data
-                item.count = parseInt( config.validade / config.time ) // Quantidade de vezes que o robô vai executar usando o token atual
-                item.fnTime = setInterval(robot, config.time, item, config)    
-                console.log(moment().format(),`- (ROBÔ - TOKEN RENOVADO ) - ${item.login.resposta.token} - loop:`,loopToken)
+                item.count = parseInt( config.validade / config.time ) -1 // Quantidade de vezes que o robô vai executar usando o token atual
+                item.fnTime = setInterval(robot, config.time, item, config, uptime)    
+                console.log(moment().format(),`- ( TOKEN RENOVADO ) - ${item.login.resposta.token} - UP Time: ${uptime}s - loop:`,loopToken)
 
             } else {
-                console.log(moment().format(),`- (ERRO - RENOVAR TOKEN) - ${item.nome}`,ret)
+                console.log(moment().format(),`- ( ERRO - RENOVAR TOKEN ) - ${item.nome}`,ret)
             }
         })
     })

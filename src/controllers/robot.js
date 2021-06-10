@@ -7,6 +7,7 @@ const initEmRota        = require('../metodsDB/initEmRota')
 const initEntrega       = require('../metodsDB/initEntrega')
 const initOcorrencias   = require('../metodsDB/initOcorrencias')
 const initComprovante   = require('../metodsDB/initComprovante')
+const encerraProcessos  = require('../metodsDB/encerraProcessos')
 const registraNF        = require('../models/registraNF')
 const transfereNF       = require('../models/transfereNF')
 const chegadaNF         = require('../models/chegadaNF')
@@ -15,85 +16,93 @@ const entregaNF         = require('../models/entregaNF')
 const ocorrencias       = require('../models/ocorrencias')
 const comprovante       = require('../models/comprovante')
 
-const robot = async (cli,cfg) =>{
+const logEventos = (cfg,msg,ret) => {
+   if(cfg.debug=='ON' || ret.success || ret.rowsAffected==-1 ) {
+      if(ret.rowsAffected==-1) {
+         console.error(moment().format(),'-',msg,ret)
+      } else {
+         console.log(moment().format(),'-',msg,ret) 
+      }   
+   }
+}
 
-    // 1 - 000 - PROCESSO DE TRANSPORTE INICIADO
-    // 2 - 128 - EM PROCESSO DE TRANSFERENCIA ENTRE AS FILIAIS
-    // 3 - 098 - CHEGADA NA CIDADE OU FILIAL DE DESTINO
-    // 4 - 110 - EM ROTA PARA ENTREGA
-    // 5 - 001 - ENTREGA REALIZADA NORMALMENTE
-    // 6 - 999 - COMPROVANTE DE ENTREGA
-    // 9 - XXX - FINALIZADO
+const robot = async (cli,cfg,uptime) =>{
+   let timeOUT = Math.ceil((process.uptime()-2) - uptime)
    
-    // PRINT EXECUÇÃO
-    console.log(moment().format(),'- Robô em Execução:',cli.count)
-    if( cli.count<=0 ){
-        clearInterval(cli.fnTime);
-        console.log(moment().format(),`FIM VALIDADE TOKEN - ${cli.login.resposta.token} -`,cli.nome)
-        return 
+    // CONTROLE DE EXECUÇÃO
+    if( cli.count <=0 ){
+         clearInterval(cli.fnTime);
+         console.log(moment().format(),`- ( TOKEN VENCIDO  ) - ${cli.login.resposta.token} - Time: ${timeOUT}s - `,cli.nome)
+         return 
+    } else {
+         console.log(moment().format(),'- Robô em Execução:',cli.count,' - ',timeOUT,'s')
     }
     cli.count--
 
     // CAPTURA NFs 
     let retInitNFs = await initNFs(cli)
-     console.log(moment().format(),'- (BD - CAPTURA NFs) - retInitNFs:',retInitNFs) 
+    logEventos(cfg,'(BD - CAPTURA NFs) - retInitNFs:',retInitNFs) 
 
     // PROCESSO DE TRANSPORTE INICIADO
     let retInitTransporte = await initTransporte()
-     console.log(moment().format(),'- (BD - PROCESSO DE TRANSPORTE INICIADO) - retInitTransporte:',retInitTransporte)
+    logEventos(cfg,'(BD - PROCESSO DE TRANSPORTE INICIADO) - retInitTransporte:',retInitTransporte)
 
-     let retRegistraNF = await registraNF(cfg,cli)
-     console.log(moment().format(),'- (API - REGISTRO NF) - retRegistraNF:',retRegistraNF)
+    let retRegistraNF = await registraNF(cfg,cli)
+    logEventos(cfg,'(API - REGISTRO NF) - retRegistraNF:',retRegistraNF)
 
-     if(retInitNFs.rowsAffected>0) {
-        return 
-     }
+    if(retInitNFs.rowsAffected>0) {
+       return 
+    }
  
     // EM PROCESSO DE TRANSFERENCIA ENTRE AS FILIAIS
     let retInitTransferencia = await initTransferencia()
-     console.log(moment().format(),'- (BD - EM PROCESSO DE TRANSFERENCIA ENTRE AS FILIAIS) - retInitTransferencia:',retInitTransferencia)
+    logEventos(cfg,'(BD - EM PROCESSO DE TRANSFERENCIA ENTRE AS FILIAIS) - retInitTransferencia:',retInitTransferencia)
 
-     let retTransfereNF = await transfereNF(cfg,cli)
-     console.log(moment().format(),'- (API - TRANSFERENCIA ENTRE FILIAIS) - retTransfereNF:',retTransfereNF)
+    let retTransfereNF = await transfereNF(cfg,cli)
+    logEventos(cfg,'(API - TRANSFERENCIA ENTRE FILIAIS) - retTransfereNF:',retTransfereNF)
 
     // CHEGADA NA CIDADE OU FILIAL DE DESTINO
     let retInitChegada = await initChegada()
-     console.log(moment().format(),'- (BD - CHEGADA NA CIDADE OU FILIAL DE DESTINO) - retInitChegada:',retInitChegada)
+    logEventos(cfg,'(BD - CHEGADA NA CIDADE OU FILIAL DE DESTINO) - retInitChegada:',retInitChegada)
 
-     let retChegadaNF = await chegadaNF(cfg,cli)
-     console.log(moment().format(),'- (API - CHEGADA NA FILIAL) - retChegadaNF:',retChegadaNF)
+    let retChegadaNF = await chegadaNF(cfg,cli)
+    logEventos(cfg,'(API - CHEGADA NA FILIAL) - retChegadaNF:',retChegadaNF)
  
     // EM ROTA PARA ENTREGA
     let retInitEmRota = await initEmRota()
-     console.log(moment().format(),'- (BD - EM ROTA PARA ENTREGA) - retInitEmRota:',retInitEmRota)
+    logEventos(cfg,'(BD - EM ROTA PARA ENTREGA) - retInitEmRota:',retInitEmRota)
 
-     let retRotaEntrega = await rotaEntrega(cfg,cli)
-     console.log(moment().format(),'- (API - EM ROTA DE ENTREGA) - retRotaEntrega:',retRotaEntrega)
+    let retRotaEntrega = await rotaEntrega(cfg,cli)
+    logEventos(cfg,'(API - EM ROTA DE ENTREGA) - retRotaEntrega:',retRotaEntrega)
  
     // OCORRENCIAS MANUAIS
     let retInitOcorrencias = await initOcorrencias()
-     console.log(moment().format(),'- (BD - OCORRENCIAS MANUAIS) - retInitOcorrencias:',retInitOcorrencias)
+    logEventos(cfg,'(BD - OCORRENCIAS MANUAIS) - retInitOcorrencias:',retInitOcorrencias)
 
-     let retOcorrencias = await ocorrencias(cfg,cli)
-     console.log(moment().format(),'- (API - OCORRÊNCIAS MANUAIS) - retOcorrencias:',retOcorrencias)
+    let retOcorrencias = await ocorrencias(cfg,cli)
+    logEventos(cfg,'(API - OCORRÊNCIAS MANUAIS) - retOcorrencias:',retOcorrencias)
 
-     if(retInitOcorrencias.rowsAffected>0) {
-        return 
-     }
+    if(retInitOcorrencias.rowsAffected>0) {
+       return 
+    }
 
-     // ENTREGA REALIZADA NORMALMENTE
+    // ENTREGA REALIZADA NORMALMENTE
     let retInitEntrega = await initEntrega()
-     console.log(moment().format(),'- (BD - ENTREGA REALIZADA NORMALMENTE) - retInitEntrega:',retInitEntrega)
+    logEventos(cfg,'(BD - ENTREGA REALIZADA NORMALMENTE) - retInitEntrega:',retInitEntrega)
 
-     let retEntregaNF = await entregaNF(cfg,cli)
-     console.log(moment().format(),'- (API - REGISTRO DE ENTREGA) - retEntregaNF:',retEntregaNF)
+    let retEntregaNF = await entregaNF(cfg,cli)
+    logEventos(cfg,'(API - REGISTRO DE ENTREGA) - retEntregaNF:',retEntregaNF)
 
     // COMPROVANTE DE ENTREGA
-     let retInitComprovante = await initComprovante(cfg,cli)
-     console.log(moment().format(),'- (BD - COMPROVANTE) - retInitComprovante:',retInitComprovante)
+    let retInitComprovante = await initComprovante(cfg,cli)
+    logEventos(cfg,'(BD - COMPROVANTE) - retInitComprovante:',retInitComprovante)
 
-     let retComprovante = await comprovante(cfg,cli)
-     console.log(moment().format(),'- (API - COMPROVANTE) - retComprovante:',retComprovante)
+    let retComprovante = await comprovante(cfg,cli)
+    logEventos(cfg,'(API - COMPROVANTE) - retComprovante:',retComprovante)
+
+    // ENCERRA PROCESSOS
+    let retEncerraProcessos = await encerraProcessos()
+    logEventos(cfg,'(BD - ENCERRA PROCESSOS) - retEncerraProcessos:',retEncerraProcessos)
  
      return 
 
