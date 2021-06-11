@@ -4,7 +4,8 @@ const loadAPI = require('../helpers/loadAPI')
 const embarque = async (cfg,cli,body) => {
     let method   = 'POST'
     let endpoint = ''
-    let server   =  'http://localhost:5000/test/showTest'     ///   cfg.loginURL
+    //let server   =  'http://localhost:5000/test/showTest' 
+    let server   = cfg.embarqueURL
     let params   = body
     let token    = cli.login.resposta.token
     
@@ -13,7 +14,7 @@ const embarque = async (cfg,cli,body) => {
     if( ret.success ) {
         console.log(moment().format(),'- SUCCESS - API EMBARQUE.')
     } else {
-        console.log(moment().format(),'- FALHA - API EMBARQUE.',ret.err )
+        console.log(moment().format(),'- FALHA - API EMBARQUE.',ret.err,'*',ret.url,'*',ret.data )
     }
 
     return ret

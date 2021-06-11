@@ -5,6 +5,9 @@ const path          = require('path')
 const sqlFileName   =  path.join(__dirname, '../../sql/consultas/montaConfirmaFacil.SQL')
 const sqlInitNF     = fs.readFileSync(sqlFileName, "utf8")
 
+const faixa_down = '-20'
+const faixa_up   = '-19'   
+
 let flag_livre      = true
 
 const initNFs = async (cli) => {
@@ -18,7 +21,13 @@ const initNFs = async (cli) => {
 	 (SUBSTRING(CNH.CLI_CGCCPF_PAG,1,8)   = '${raiz}' OR 
 	  SUBSTRING(CNH.CLI_CGCCPF_DEST,1,8)  = '${raiz}' OR
 	  SUBSTRING(CNH.CLI_CGCCPF_REMET,1,8) = '${raiz}' )
-      AND CNH.DATATU BETWEEN (CURRENT_TIMESTAMP-15) AND (CURRENT_TIMESTAMP+1)
+      -- AND CNH.DATATU BETWEEN (CURRENT_TIMESTAMP${faixa_down}) AND (CURRENT_TIMESTAMP${faixa_up})
+      -- AND NFR.CHAVENFE = '31210412744404000500550010003468061103078498'
+      -- AND NFR.CHAVENFE = '31210512744404000500550010003535611103250001'
+      -- AND NFR.CHAVENFE = '31210512744404000500550010003535601103249987'
+      -- AND NFR.CHAVENFE = '31210512744404000500550010003535451103247627'
+      AND NFR.CHAVENFE = '31210512744404000500550010003535291103246198'
+      AND CNH.VALORNF>0
       AND NFR.CHAVENFE IS NOT NULL  
       AND CTE.PROTOCOLOCTE IS NOT NULL
       AND NFE.ID IS NULL
