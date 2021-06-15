@@ -9,6 +9,9 @@ const enviaDadosAPI = async (cfg,cli,base,sql) => {
     let LIST = 0
     let EMBARQUE = {success: false}
     let UPDATE   = {success: false, rowsAffected: 0}
+
+    // console.log('SQL enviaDadosAPI:',sql)
+
     try {
         ROWS      = await sqlQuery( sql )
         LIST      = ROWS.length >0   ? await montaJSON( ROWS, base )    : []

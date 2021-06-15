@@ -15,16 +15,10 @@ const rotaEntrega       = require('../models/rotaEntrega')
 const entregaNF         = require('../models/entregaNF')
 const ocorrencias       = require('../models/ocorrencias')
 const comprovante       = require('../models/comprovante')
+const logEventos        = require('../helpers/logEventos')
 
-const logEventos = (cfg,msg,ret) => {
-   if(cfg.debug=='ON' || ret.success || ret.rowsAffected==-1 ) {
-      if(ret.rowsAffected==-1) {
-         console.error(moment().format(),'-',msg,ret)
-      } else {
-         console.log(moment().format(),'-',msg,ret) 
-      }   
-   }
-}
+const preparaLinkComprovante = require('../helpers/preparaLinkComprovante')
+
 
 const robot = async (cli,cfg,uptime) =>{
    let timeOUT = Math.ceil((process.uptime()-2) - uptime)
@@ -38,6 +32,7 @@ const robot = async (cli,cfg,uptime) =>{
          console.log(moment().format(),'- Robô em Execução:',cli.count,' - ',timeOUT,'s')
     }
     cli.count--
+
 
     // CAPTURA NFs 
     let retInitNFs = await initNFs(cli)
@@ -53,6 +48,9 @@ const robot = async (cli,cfg,uptime) =>{
     if(retInitNFs.rowsAffected>0) {
        return 
     }
+
+        /*
+
  
     // EM PROCESSO DE TRANSFERENCIA ENTRE AS FILIAIS
     let retInitTransferencia = await initTransferencia()
@@ -97,14 +95,22 @@ const robot = async (cli,cfg,uptime) =>{
     let retInitComprovante = await initComprovante(cfg,cli)
     logEventos(cfg,'(BD - COMPROVANTE) - retInitComprovante:',retInitComprovante)
 
+
+    // AVISA A API PARA DOWNLOAD DO COMPROVANTE
+    let retInitPreparaDownload = await preparaLinkComprovante(cfg)
+    logEventos(cfg,'(FILE - COMPROVANTE) - retInitPreparaDownload:',retInitPreparaDownload)
+
     let retComprovante = await comprovante(cfg,cli)
     logEventos(cfg,'(API - COMPROVANTE) - retComprovante:',retComprovante)
 
     // ENCERRA PROCESSOS
     let retEncerraProcessos = await encerraProcessos()
     logEventos(cfg,'(BD - ENCERRA PROCESSOS) - retEncerraProcessos:',retEncerraProcessos)
- 
-     return 
+
+   */
+
+   
+   return 
 
 }
 
