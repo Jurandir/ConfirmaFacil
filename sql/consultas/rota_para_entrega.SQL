@@ -1,5 +1,5 @@
 -- EM ROTA PARA ENTREGA
-SELECT TOP 50
+SELECT TOP 10
     -- ROW_NUMBER() OVER(ORDER BY CO.DT_CREATE ASC) AS Row#,
 	CO.ID                                        AS FLAG_ID,
 	CF.NUMERO                                    AS embarque_numero,

@@ -9,12 +9,20 @@ const embarque = async (cfg,cli,body) => {
     let params   = body
     let token    = cli.login.resposta.token
     
-    let ret = await loadAPI(method,endpoint,server,params,token)
+    let ret  = await loadAPI(method,endpoint,server,params,token)
+    let base = ret
 
+    try {
+          base = ret.data
+    } catch (err) {
+        console.log(moment().format(),'- (embarque.js) :',err,ret)
+    }
+    
     if( ret.success ) {
-        console.log(moment().format(),'- SUCCESS - API EMBARQUE.','-> ret.data.response.data:',ret.data.response.data)
+        console.log(moment().format(),'- SUCCESS - (API EMBARQUE) - RESPONSE:',`( STATUS:${base.status} )`,base.message)
     } else {
-        console.log(moment().format(),'- FALHA - API EMBARQUE.',ret.err,'*',ret.url,'-> ret.data.response.data:',ret.data.response.data )
+        base = ret.data.response.data
+        console.log(moment().format(),'- (embarque.js) FALHA - API EMBARQUE:',`(CODE:${base.status}, ERROR:${base.error}, PATH:${base.path}, ERR:${ret.err})`)
     }
 
     return ret

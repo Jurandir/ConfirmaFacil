@@ -1,5 +1,5 @@
 -- OCORRÊNCIAS MANUAIS
-SELECT TOP 50
+SELECT TOP 10
     -- ROW_NUMBER() OVER(ORDER BY CO.DT_CREATE ASC) AS Row#,
 	CO.ID                                        AS FLAG_ID,
 	CF.NUMERO                                    AS embarque_numero,
@@ -28,7 +28,11 @@ SELECT TOP 50
 	CO.OCORRENCIA_NOME                           AS ocorrencia_descricaoTipoEntrega,
 	FORMAT(CO.OCORRENCIA_DATA,'dd-MM-yyyy')      AS ocorrencia_dtOcorrencia,
 	FORMAT(CO.OCORRENCIA_DATA,'HH:mm:ss')        AS ocorrencia_hrOcorrencia,
-	CONCAT('CTRC: ',CF.CTRC)                     AS ocorrencia_comentario
+	CONCAT('CTRC: ',CF.CTRC)                     AS ocorrencia_comentario,
+	CASE WHEN CO.OCORRENCIA_ID=91 THEN FORMAT(CF.DT_PREVISAO,'dd-MM-yyyy') ELSE NULL END 
+	                                             AS ocorrencia_dataAgendamento,
+	CASE WHEN CO.OCORRENCIA_ID=91 THEN FORMAT(CF.DT_PREVISAO,'HH:mm:ss') ELSE NULL END 
+                                                 AS ocorrencia_horaAgendamento
 FROM SIC.dbo.CONFIRMAFACILOCORRENCIA CO
 JOIN SIC.dbo.CONFIRMAFACIL           CF ON CF.ID           = CO.CONFIRMAFACIL_ID
 JOIN CARGASSQL.dbo.CLI               DE ON CF.DESTINATARIO = DE.CGCCPF 

@@ -3,6 +3,14 @@ const sqlExec = require('../connection/sqlExec')
 
 const updFlagsEnvio = async (dados,response) => {
     let IDs = dados.map( item => item.FLAG_ID).join()
+
+    // console.log('(updFlagsEnvio) RESPONSE:',response)
+
+    if(!response.data) {
+        return { success: false, message: 'updFlags - Sem Dados (1)', rowsAffected: 0 }     
+    }
+
+    // console.log('updFlagsEnvio:',dados,response)
     
     let list      = response.data.message
     let code      = response.data.status
@@ -10,7 +18,7 @@ const updFlagsEnvio = async (dados,response) => {
     let protocolo = response.data.protocolo
     let message   = ''
     list.map( item => {
-        message += `(${item.posicao}-${dados[item.posicao].FLAG_ID}-${item.message}),`
+        message += `(${item.posicao}-${dados[item.posicao].FLAG_ID}-OK),`
     })
 
     let sql = `UPDATE SIC.dbo.CONFIRMAFACILOCORRENCIA 
@@ -23,7 +31,7 @@ const updFlagsEnvio = async (dados,response) => {
     try {
 
         if(!IDs) {
-            return { success: false, message: 'updFlags - Sem Dados', rowsAffected: 0 }     
+            return { success: false, message: 'updFlags - Sem Dados (2)', rowsAffected: 0 }     
         }
 
         let result = await sqlExec(sql)         
@@ -31,6 +39,9 @@ const updFlagsEnvio = async (dados,response) => {
             console.log(moment().format(),'- SUCCESS - ENVIO p/ API, IDs:',IDs )
         } else {
             console.log(moment().format(),'- FALHA UPD FLAG - ENVIO p/ API, IDs:',IDs,'-',result.message )
+            console.log('updFlagsEnvio SQL:',sql)
+            console.log('updFlagsEnvio RESULT:',result)
+
         }
 
         return result

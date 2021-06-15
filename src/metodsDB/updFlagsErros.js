@@ -2,14 +2,26 @@ const moment  = require('moment')
 const sqlExec = require('../connection/sqlExec')
 
 const updFlagsErros = async (dados,response) => {
-    let IDs = dados.map( item => item.FLAG_ID).join()
+    let result = {success: false, message:'updFlagsErros' ,rowsAffected: 0 , embarque: response }
+
+    // console.log('(updFlagsErros) 0')
+
+    if(!response.data) {
+        // console.log('(updFlagsErros) Passou 2')
+        return result
+    }
+    // console.log('(updFlagsErros) Passou 1')
+
+    let base        = response.data.response  
+    let list        = base.data.message
+    let code        = base.data.status
+    let flag        = code==200 ? 1 : 2
+    let protocolo   = base.data.protocolo
+    result.embarque = base
+
+    console.log(moment().format(),'- Lista:',list)
     
-    let list      = response.data.message
-    let code      = response.data.status
-    let flag      = code==200 ? 1 : 2
-    let protocolo = response.data.protocolo
-    let message   = ''
-    list.map( item => {
+    list.map( async (item) => {
         let sql = `UPDATE SIC.dbo.CONFIRMAFACILOCORRENCIA 
                       SET FLAG_SEND          = ${flag},
                           DT_SEND            = CURRENT_TIMESTAMP,
@@ -21,26 +33,16 @@ const updFlagsErros = async (dados,response) => {
 
             let result = await sqlExec(sql)         
             if( result.success ) {
-                console.log(moment().format(),'- STATUS BD: ',dados[item.posicao].FLAG_ID, item.message )
+                console.log(moment().format(),'- Lista - STATUS BD (UPD SUCESSO): ID:',dados[item.posicao].FLAG_ID,'MSG:', item.message )
             } else {
-                console.log(moment().format(),'- FALHA UPD FLAG - SQL DB:',sql )
+                console.log(moment().format(),'- Lista - FALHA UPD (FLAG ERROS)- SQL DB:',item,sql )
             }
-
-            return result
     
         } catch (err) {
-            let Erro = {
-                success: false,
-                message: err.message,
-                rowsAffected: -1,
-                rotine: 'updFlagsErros',
-                sql: sql,
-                err: err
-            }
-            console.log(moment().format(),'- ERRO UPD FLAG - SQL DB:',err.message,sql )
-            return Erro
+            console.log(moment().format(),'- Lista - ERRO UPD (FLAG ERROS)- SQL DB:',item,err.message,sql )
         }
-})
+    })
+    return result
 
 }
 

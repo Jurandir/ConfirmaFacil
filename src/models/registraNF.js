@@ -16,7 +16,8 @@ const base = () => {
 }
 
 const registraNF = async (cfg,cli) => {
-    return await enviaDadosAPI(cfg,cli,base,sql)
+    let ret = await enviaDadosAPI(cfg,cli,base,sql)    
+    return ret
 }
 
 module.exports = registraNF
