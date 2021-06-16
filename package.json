@@ -4,6 +4,7 @@
   "description": "Robô de envio tracker para confirmafacio.com.br",
   "main": "webHook.js",
   "scripts": {
+    "start": "node .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Jurandir Ferreira",

@@ -15,35 +15,15 @@
 12744404000500 MUNDIAL DIST DE PRODUTOS DE CONSUMO LTDA
 12744404000179 MUNDIAL DIST DE PRODUTOS DE CONSUMO LTDA
 
-
-
-Exemplo com quantidade "mínima" de atributos para inserir uma ocorrência, o qual, segue abaixo:
-JSON
-[
-   {
-      "embarque":{
-         "numero":"479197",
-         "serie":"1"
-      },
-      "embarcador":{
-         "cnpj":"88610191000405"
-      },
-      "ocorrencia":{
-         "tipoEntrega":"1",
-         "dtOcorrencia":"30/04/2021",
-         "hrOcorrencia":"10:55:40"
-      },
-      "transportadora": {
-         "cnpj": "5592303000164"
-      }
-   }
-]
-
-OBS: Para envio das ocorrências agendadoras, é obrigatório informar no objeto "ocorrencia" os atributos:
-"dataAgendamento": "DD-MM-AAAA ou DD/MM/AAAA",
-"horaAgendamento": "HH:MM:SS"
-Quaisquer dúvidas, favor entrar em contato.
-Atenciosamente,
+-----------------------------------------------------------------------
+Retornos observados:
+(0,1,98,128) could not execute statement; SQL [n/a]; constraint [INDX_UNIQUE_OC]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement
+(0,1,98,128) could not execute statement; SQL [n/a]; nested exception is org.hibernate.exception.DataException: could not execute statement
+Embarcador não encontrado. (RECUSOU 08789877000549,07222185000128,62270186004577)
+(91) Ocorrência agendadora sem data de agendamento
+(91,110) Ocorrência com data futura
+(0,1,5,26,33,58,79,82,84,91,92,98,110,128) Ocorrência já existe
+-----------------------------------------------------------------------
 
  
 Valtilaine da R. Silva
