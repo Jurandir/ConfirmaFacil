@@ -24,12 +24,12 @@ const preparaLinkComprovante = async (cfg) => {
                     resp.rowsAffected = 0
                     let api = resp.data
                     if(api.success){
-                        logEventos(cfg,`LINK :${api.message} - ${api.url}`,resp)
+                        logEventos(cfg,`SUCCESS LINK :${api.message} - ${api.url}`,resp)
                         updDownload( itn.CTRC )
                     }
                 } else {
                     resp.rowsAffected = -1
-                    logEventos(cfg,`LINK :${resp.err}`,resp)
+                    logEventos(cfg,`ERROR LINK :${resp.err}`,resp)
                 }   
 
             })

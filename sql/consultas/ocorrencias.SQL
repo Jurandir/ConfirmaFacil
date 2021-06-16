@@ -26,8 +26,12 @@ SELECT TOP 10
 	CF.CTRC                                      AS pedido_numero,
 	CO.OCORRENCIA_ID                             AS ocorrencia_tipoEntrega,
 	CO.OCORRENCIA_NOME                           AS ocorrencia_descricaoTipoEntrega,
-	FORMAT(CO.OCORRENCIA_DATA,'dd-MM-yyyy')      AS ocorrencia_dtOcorrencia,
-	FORMAT(CO.OCORRENCIA_DATA,'HH:mm:ss')        AS ocorrencia_hrOcorrencia,
+	CASE WHEN CO.OCORRENCIA_DATA<=CURRENT_TIMESTAMP THEN FORMAT(CO.OCORRENCIA_DATA,'dd-MM-yyyy') 
+	                                                ELSE FORMAT(CURRENT_TIMESTAMP,'dd-MM-yyyy')  END 
+	                                             AS ocorrencia_dtOcorrencia,
+	CASE WHEN CO.OCORRENCIA_DATA<=CURRENT_TIMESTAMP THEN FORMAT(CO.OCORRENCIA_DATA,'HH:mm:ss') 
+	                                                ELSE FORMAT(CURRENT_TIMESTAMP,'HH:mm:ss')  END 
+	                                             AS ocorrencia_hrOcorrencia,
 	CONCAT('CTRC: ',CF.CTRC)                     AS ocorrencia_comentario,
 	CASE WHEN CO.OCORRENCIA_ID=91 THEN FORMAT(CF.DT_PREVISAO,'dd-MM-yyyy') ELSE NULL END 
 	                                             AS ocorrencia_dataAgendamento,

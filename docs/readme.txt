@@ -16,6 +16,10 @@
 12744404000179 MUNDIAL DIST DE PRODUTOS DE CONSUMO LTDA
 
 -----------------------------------------------------------------------
+Erro no servidor:
+https://stackoverflow.com/questions/44679614/can-someone-explain-an-enobufs-error
+
+-----------------------------------------------------------------------
 Retornos observados:
 (0,1,98,128) could not execute statement; SQL [n/a]; constraint [INDX_UNIQUE_OC]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement
 (0,1,98,128) could not execute statement; SQL [n/a]; nested exception is org.hibernate.exception.DataException: could not execute statement
