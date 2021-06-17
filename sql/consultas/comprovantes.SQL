@@ -14,8 +14,8 @@ SELECT TOP 10
 	CO.OCORRENCIA_NOME                           AS ocorrencia_descricaoTipoEntrega,
 	FORMAT(CO.OCORRENCIA_DATA,'dd-MM-yyyy')      AS ocorrencia_dtOcorrencia,
 	FORMAT(CO.OCORRENCIA_DATA,'HH:mm:ss')        AS ocorrencia_hrOcorrencia,
-	CF.CTRC                                      AS ocorrencia_comentario,
-	CONCAT('${server}/Img_',CF.CTRC,'.png')                 AS ocorrencia_fotos
+    'FOTO VIA APP'                               AS ocorrencia_comentario,
+	CONCAT('${server}/Img_',CF.CTRC,'.png')      AS ocorrencia_fotos
 FROM SIC.dbo.CONFIRMAFACILOCORRENCIA CO
 JOIN SIC.dbo.CONFIRMAFACIL           CF ON CF.ID           = CO.CONFIRMAFACIL_ID
 JOIN CARGASSQL.dbo.CLI               DE ON CF.DESTINATARIO = DE.CGCCPF 

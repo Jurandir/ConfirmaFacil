@@ -28,7 +28,7 @@ SELECT TOP 10
 	CO.OCORRENCIA_NOME                           AS ocorrencia_descricaoTipoEntrega,
 	FORMAT(CO.OCORRENCIA_DATA,'dd-MM-yyyy')      AS ocorrencia_dtOcorrencia,
 	FORMAT(CO.OCORRENCIA_DATA,'HH:mm:ss')        AS ocorrencia_hrOcorrencia,
-	CF.CTRC                                      AS ocorrencia_comentario,
+	CONCAT('DESTINATÁRIO EM : ',CD.NOME,' ',CD.UF) AS ocorrencia_comentario,
 	CF.CTRC                                      AS trecho_ordem,
 	FORMAT(CF.DT_EMBARQUE,'dd-MM-yyyy')          AS trecho_dtInicio,
 	FORMAT(CF.DT_CHEGADA,'dd-MM-yyyy')           AS trecho_dtFim,

@@ -1,3 +1,6 @@
+// By: Jurandir Ferreira
+// Em Produção em : 15/06/2021
+// ----------------------------
 const moment            = require('moment')
 const initNFs           = require('../metodsDB/initNFs')
 const initTransporte    = require('../metodsDB/initTransporte')

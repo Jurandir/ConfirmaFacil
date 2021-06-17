@@ -28,7 +28,7 @@ SELECT TOP 10
 	CO.OCORRENCIA_NOME                           AS ocorrencia_descricaoTipoEntrega,
 	FORMAT(CO.OCORRENCIA_DATA,'dd-MM-yyyy')      AS ocorrencia_dtOcorrencia,
 	FORMAT(CO.OCORRENCIA_DATA,'HH:mm:ss')        AS ocorrencia_hrOcorrencia,
-	CF.CTRC                                      AS ocorrencia_comentario,
+    CONCAT('CHEGADA EM : ',CFD.NOME,' ',CFD.UF)	 AS ocorrencia_comentario,
 	CF.CTRC                                      AS trecho_ordem,
 	FORMAT(CF.DT_EMBARQUE,'dd-MM-yyyy')          AS trecho_dtInicio,
 	FORMAT(CF.DT_CHEGADA,'dd-MM-yyyy')           AS trecho_dtFim,
@@ -64,4 +64,3 @@ JOIN CARGASSQL.dbo.CID    CFD ON CFD.CODIGO      = FD.CID_CODIGO
 WHERE CO.FLAG_SEND = 0
   AND CO.OCORRENCIA_ID = 098
   AND CF.FASE_ID < 9
-

@@ -1,0 +1,21 @@
+--- Email : (valtilaine.silva@mundial.com) / 17/06/2021 07:45
+Bom Dia,
+Roberto
+
+Informo que as Notas embarcadas na data de ontem não consta ocorrência lançada no CF, 
+no site da Termaco consta a emissão CTe, porém a ocorrência não carregou no CF, 
+por gentileza verificar pois as ocorrências são automáticas do site para CF, 
+nesse caso é possível que a integração não esteja funcionando.
+
+Fico no aguardo,
+Atenciosamente,
+Valtilaine Silva
+
+Analise da situação: (Jurandir Ferreira)
+1) A NF somente é enviada para acompanhamento quando o CTe é validado na SEFAZ. 
+   Seguindo o Padrão ( ORION, CEVA, iTrack )
+2) A NF tem que estar com valor maior que ZERO no CNH (Conhecimento).
+   Para evitar os erros de envios de serviços e reigeição da API.
+   
+
+

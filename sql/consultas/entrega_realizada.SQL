@@ -30,7 +30,8 @@ SELECT TOP 10
 	FORMAT(CO.OCORRENCIA_DATA,'HH:mm:ss')        AS ocorrencia_hrOcorrencia,
 	CO.RECEBEDOR_DOC                             AS ocorrencia_documentoRecebedor,
 	CO.RECEBEDOR_NOME                            AS ocorrencia_nomeRecebedor,
-	CF.CTRC                                      AS ocorrencia_comentario,
+	CONCAT('ENTREGA REALIZADA EM ',FORMAT(CF.DT_ENTREGA,'dd-MM-yyyy') )
+	                                             AS ocorrencia_comentario,
 	CF.CTRC                                      AS trecho_ordem,
 	FORMAT(CF.DT_EMBARQUE,'dd-MM-yyyy')          AS trecho_dtInicio,
 	FORMAT(CF.DT_CHEGADA,'dd-MM-yyyy')           AS trecho_dtFim,
