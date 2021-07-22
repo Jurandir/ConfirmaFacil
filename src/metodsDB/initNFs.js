@@ -23,10 +23,18 @@ const initNFs = async (cli) => {
 	  SUBSTRING(CNH.CLI_CGCCPF_REMET,1,8) = '${raiz}' )
       AND CNH.DATATU BETWEEN (CURRENT_TIMESTAMP${faixa_down}) AND (CURRENT_TIMESTAMP${faixa_up})
       AND CNH.VALORNF>0
+      AND CNH.STATUS='I'
       AND NFR.CHAVENFE IS NOT NULL  
       AND CTE.PROTOCOLOCTE IS NOT NULL
       AND NFE.ID IS NULL
    `
+    /* 
+      -- (CNH.STATUS) --
+        C-CANCELADO
+        A-ANULADO
+        S-SUBSTITUIDO
+        I-IMPRESSO
+    */
     if(!flag_livre) { return { success: false, message: 'Processo ocupado !!!' }} 
     flag_livre = false
    
