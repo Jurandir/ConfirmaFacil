@@ -19,7 +19,7 @@ const updFlagsErros = async (dados,response) => {
     let protocolo   = base.data.protocolo
     result.embarque = base
 
-    console.log(moment().format(),'- Lista:',list)
+    console.log(moment().format(),'- (updFlagsErros.js) Lista:',list)
     
     list.map( async (item) => {
         let sql = `UPDATE SIC.dbo.CONFIRMAFACILOCORRENCIA 
