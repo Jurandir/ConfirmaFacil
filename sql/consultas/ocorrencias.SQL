@@ -1,43 +1,43 @@
 -- OCORRÊNCIAS MANUAIS
 SELECT TOP 10
     -- ROW_NUMBER() OVER(ORDER BY CO.DT_CREATE ASC) AS Row#,
-	CO.ID                                        AS FLAG_ID,
-	CF.NUMERO                                    AS embarque_numero,
-	CF.SERIE                                     AS embarque_serie,
-	CF.CHAVE                                     AS embarque_chave,
-	FORMAT(CF.DT_EMISSAO,'dd-MM-yyyy')           AS embarque_dtEmissao,
-	FORMAT(CF.DT_PREVISAO,'dd-MM-yyyy')          AS embarque_dtPrevisao,
-	FORMAT(CF.DT_PREV_ORIGINAL,'dd-MM-yyyy')     AS embarque_dtPrevisaoDestinatario,
-	CF.VALOR                                     AS embarque_valor,
-	'convencional'                               AS embarque_tipoEnvio,
-	CF.EMBARCADOR                                AS embarcador_cnpj,
-	DE.NOME                                      AS destinatario_nome,
-	CF.EMBARCADOR                                AS destinatario_cnpj,
-	DE.EMAIL                                     AS destinatario_email,
-	DE.CEP                                       AS destinatario_endereco_cep,
-	CD.UF                                        AS destinatario_endereco_uf,
-	CD.NOME                                      AS destinatario_endereco_cidade,
-	CONCAT(DE.BAIRRO,', ',DE.ENDERECO)           AS destinatario_endereco_logradouro,
-	DE.NUMERO                                    AS destinatario_endereco_numero,
-	DE.LATITUDE                                  AS destinatario_endereco_latitude,
-	DE.LONGITUDE                                 AS destinatario_endereco_longitude,
-	CONCAT('TERMACO - ',SUBSTRING(CF.CTRC,1,3))  AS transportadora_nome,
-	CF.TRANSPORTADOR                             AS transportadora_cnpj,
-	CF.CTRC                                      AS pedido_numero,
-	CO.OCORRENCIA_ID                             AS ocorrencia_tipoEntrega,
-	CO.OCORRENCIA_NOME                           AS ocorrencia_descricaoTipoEntrega,
-	CASE WHEN CO.OCORRENCIA_DATA<=CURRENT_TIMESTAMP THEN FORMAT(CO.OCORRENCIA_DATA,'dd-MM-yyyy') 
+	 CO.ID                                        AS FLAG_ID
+	,CF.NUMERO                                    AS embarque_numero
+	,CF.SERIE                                     AS embarque_serie
+	,CF.CHAVE                                     AS embarque_chave
+	-- ,FORMAT(CF.DT_EMISSAO,'dd-MM-yyyy')           AS embarque_dtEmissao,
+	-- ,FORMAT(CF.DT_PREVISAO,'dd-MM-yyyy')          AS embarque_dtPrevisao,
+	-- ,FORMAT(CF.DT_PREV_ORIGINAL,'dd-MM-yyyy')     AS embarque_dtPrevisaoDestinatario,
+	-- ,CF.VALOR                                     AS embarque_valor,
+	-- ,'convencional'                               AS embarque_tipoEnvio,
+	,CF.EMBARCADOR                                AS embarcador_cnpj
+	-- ,DE.NOME                                      AS destinatario_nome,
+	-- ,CF.EMBARCADOR                                AS destinatario_cnpj,
+	-- ,DE.EMAIL                                     AS destinatario_email,
+	-- ,DE.CEP                                       AS destinatario_endereco_cep,
+	-- ,CD.UF                                        AS destinatario_endereco_uf,
+	-- ,CD.NOME                                      AS destinatario_endereco_cidade,
+	-- ,CONCAT(DE.BAIRRO,', ',DE.ENDERECO)           AS destinatario_endereco_logradouro,
+	-- ,DE.NUMERO                                    AS destinatario_endereco_numero,
+	-- ,DE.LATITUDE                                  AS destinatario_endereco_latitude,
+	--,DE.LONGITUDE                                 AS destinatario_endereco_longitude,
+	-- ,CONCAT('TERMACO - ',SUBSTRING(CF.CTRC,1,3))  AS transportadora_nome,
+	,CF.TRANSPORTADOR                             AS transportadora_cnpj
+	-- ,CF.CTRC                                      AS pedido_numero,
+	-- ,CO.OCORRENCIA_ID                             AS ocorrencia_tipoEntrega,
+	-- ,CO.OCORRENCIA_NOME                           AS ocorrencia_descricaoTipoEntrega,
+	 ,CASE WHEN CO.OCORRENCIA_DATA<=CURRENT_TIMESTAMP THEN FORMAT(CO.OCORRENCIA_DATA,'dd-MM-yyyy') 
 	                                                ELSE FORMAT(CURRENT_TIMESTAMP,'dd-MM-yyyy')  END 
-	                                             AS ocorrencia_dtOcorrencia,
-	CASE WHEN CO.OCORRENCIA_DATA<=CURRENT_TIMESTAMP THEN FORMAT(CO.OCORRENCIA_DATA,'HH:mm:ss') 
+	                                             AS ocorrencia_dtOcorrencia
+	 ,CASE WHEN CO.OCORRENCIA_DATA<=CURRENT_TIMESTAMP THEN FORMAT(CO.OCORRENCIA_DATA,'HH:mm:ss') 
 	                                                ELSE FORMAT(CURRENT_TIMESTAMP,'HH:mm:ss')  END 
-	                                             AS ocorrencia_hrOcorrencia,
-    (SELECT TOP 1 DESCRICAO FROM ( SELECT TOP 1 UPPER( CONVERT(VARCHAR(MAX), O.DESCRICAO )) AS DESCRICAO FROM CARGASSQL.DBO.OUN O
+	                                             AS ocorrencia_hrOcorrencia
+     ,(SELECT TOP 1 DESCRICAO FROM ( SELECT TOP 1 UPPER( CONVERT(VARCHAR(MAX), O.DESCRICAO )) AS DESCRICAO FROM CARGASSQL.DBO.OUN O
      WHERE O.CHAVE = CF.CTRC AND O.OCO_CODIGO = CO.OCORRENCIA_ID  ORDER BY O.DATA DESC UNION ALL SELECT O.NOME DESCRICAO FROM CARGASSQL.DBO.OCO O WHERE O.CODIGO = CO.OCORRENCIA_ID AND O.CODIGO <> 999) Z)
-                                                 AS ocorrencia_comentario,
-	CASE WHEN CO.OCORRENCIA_ID=91 THEN FORMAT(CF.DT_PREVISAO,'dd-MM-yyyy') ELSE NULL END 
-	                                             AS ocorrencia_dataAgendamento,
-	CASE WHEN CO.OCORRENCIA_ID=91 THEN FORMAT(CF.DT_PREVISAO,'HH:mm:ss') ELSE NULL END 
+                                                 AS ocorrencia_comentario
+	 ,CASE WHEN CO.OCORRENCIA_ID=91 THEN FORMAT(CF.DT_PREVISAO,'dd-MM-yyyy') ELSE NULL END 
+	                                             AS ocorrencia_dataAgendamento
+	,CASE WHEN CO.OCORRENCIA_ID=91 THEN FORMAT(CF.DT_PREVISAO,'HH:mm:ss') ELSE NULL END 
                                                  AS ocorrencia_horaAgendamento
 FROM SIC.dbo.CONFIRMAFACILOCORRENCIA CO
 JOIN SIC.dbo.CONFIRMAFACIL           CF ON CF.ID           = CO.CONFIRMAFACIL_ID
