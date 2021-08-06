@@ -24,7 +24,8 @@ SELECT TOP 10
 	-- ,CONCAT('TERMACO - ',SUBSTRING(CF.CTRC,1,3))  AS transportadora_nome,
 	,CF.TRANSPORTADOR                             AS transportadora_cnpj
 	-- ,CF.CTRC                                      AS pedido_numero,
-	-- ,CO.OCORRENCIA_ID                             AS ocorrencia_tipoEntrega,
+    ,CASE WHEN CO.OCORRENCIA_ID=219 THEN 120 ELSE CO.OCORRENCIA_ID END 
+	                                              AS ocorrencia_tipoEntrega,
 	-- ,CO.OCORRENCIA_NOME                           AS ocorrencia_descricaoTipoEntrega,
 	 ,CASE WHEN CO.OCORRENCIA_DATA<=CURRENT_TIMESTAMP THEN FORMAT(CO.OCORRENCIA_DATA,'dd-MM-yyyy') 
 	                                                ELSE FORMAT(CURRENT_TIMESTAMP,'dd-MM-yyyy')  END 
@@ -35,14 +36,15 @@ SELECT TOP 10
      ,(SELECT TOP 1 DESCRICAO FROM ( SELECT TOP 1 UPPER( CONVERT(VARCHAR(MAX), O.DESCRICAO )) AS DESCRICAO FROM CARGASSQL.DBO.OUN O
      WHERE O.CHAVE = CF.CTRC AND O.OCO_CODIGO = CO.OCORRENCIA_ID  ORDER BY O.DATA DESC UNION ALL SELECT O.NOME DESCRICAO FROM CARGASSQL.DBO.OCO O WHERE O.CODIGO = CO.OCORRENCIA_ID AND O.CODIGO <> 999) Z)
                                                  AS ocorrencia_comentario
-	 ,CASE WHEN CO.OCORRENCIA_ID=91 THEN FORMAT(CF.DT_PREVISAO,'dd-MM-yyyy') ELSE NULL END 
+	 ,CASE WHEN CO.OCORRENCIA_ID=91 THEN FORMAT(CNH.PREVENTREGA,'dd-MM-yyyy') ELSE NULL END 
 	                                             AS ocorrencia_dataAgendamento
-	,CASE WHEN CO.OCORRENCIA_ID=91 THEN FORMAT(CF.DT_PREVISAO,'HH:mm:ss') ELSE NULL END 
+	,CASE WHEN CO.OCORRENCIA_ID=91 THEN FORMAT(CNH.PREVENTREGA,'HH:mm:ss') ELSE NULL END 
                                                  AS ocorrencia_horaAgendamento
 FROM SIC.dbo.CONFIRMAFACILOCORRENCIA CO
 JOIN SIC.dbo.CONFIRMAFACIL           CF ON CF.ID           = CO.CONFIRMAFACIL_ID
 JOIN CARGASSQL.dbo.CLI               DE ON CF.DESTINATARIO = DE.CGCCPF 
-JOIN CARGASSQL.dbo.CID               CD ON CD.CODIGO       = DE.CID_CODIGO 
+JOIN CARGASSQL.dbo.CID               CD ON CD.CODIGO       = DE.CID_CODIGO
+JOIN CARGASSQL.dbo.CNH               CNH ON CNH.EMP_CODIGO=SUBSTRING(CF.CTRC,1,3) AND CNH.SERIE=SUBSTRING(CF.CTRC,4,1) AND CNH.CTRC=SUBSTRING(CF.CTRC,5,10) 
 WHERE CO.FLAG_SEND = 0
   AND CO.OCORRENCIA_ID NOT IN ( 000,001,098,110,128,801,999 )
   AND CF.FASE_ID < 9
