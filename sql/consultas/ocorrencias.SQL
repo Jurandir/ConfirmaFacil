@@ -25,7 +25,7 @@ SELECT TOP 10
 	,CF.TRANSPORTADOR                             AS transportadora_cnpj
 	-- ,CF.CTRC                                      AS pedido_numero,
     ,CASE WHEN CO.OCORRENCIA_ID=219 THEN 120 ELSE CO.OCORRENCIA_ID END 
-	                                              AS ocorrencia_tipoEntrega,
+	                                              AS ocorrencia_tipoEntrega
 	-- ,CO.OCORRENCIA_NOME                           AS ocorrencia_descricaoTipoEntrega,
 	 ,CASE WHEN CO.OCORRENCIA_DATA<=CURRENT_TIMESTAMP THEN FORMAT(CO.OCORRENCIA_DATA,'dd-MM-yyyy') 
 	                                                ELSE FORMAT(CURRENT_TIMESTAMP,'dd-MM-yyyy')  END 
