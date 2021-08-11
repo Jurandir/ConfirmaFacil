@@ -97,7 +97,7 @@ const robot = async (cli,cfg,uptime) =>{
       return { retInitTransferencia, retTransfereNF }
     }
 
-    // CHEGADA NA CIDADE OU FILIAL DE DESTINO
+    // CHEGADA NA CIDADE OU FILIAL DE DESTINO -- ( 098 passou para manual)
     async function chegada_filial_destino() {
       let retInitChegada = await initChegada()
       logEventos(cfg,'(BD - CHEGADA NA CIDADE OU FILIAL DE DESTINO) - retInitChegada:',retInitChegada)
