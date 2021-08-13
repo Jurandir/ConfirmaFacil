@@ -64,5 +64,5 @@ JOIN CARGASSQL.dbo.CID    CFD ON CFD.CODIGO      = FD.CID_CODIGO
 WHERE CO.FLAG_SEND = 0
   AND CO.OCORRENCIA_ID = 110
   AND CF.FASE_ID < 9
-  AND CO.OCORRENCIA_DATA >= CAST( CURRENT_TIMESTAMP AS date ) -- Testa envio apenas apos não está no futuro
+  AND CAST( CO.OCORRENCIA_DATA AS date ) <= CAST( CURRENT_TIMESTAMP AS date ) -- Testa envio apenas apos não está no futuro
 

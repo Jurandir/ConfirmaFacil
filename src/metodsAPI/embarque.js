@@ -23,6 +23,9 @@ const embarque = async (cfg,cli,body) => {
     } else {
         base = ret.data.response.data
         console.log(moment().format(),'- (embarque.js) FALHA - API EMBARQUE:',`(CODE:${base.status}, ERROR:${base.error}, PATH:${base.path}, ERR:${ret.err})`)
+        console.log('=========================================')
+        console.log('>>:',ret)
+        console.log('=========================================')
     }
 
     return ret
