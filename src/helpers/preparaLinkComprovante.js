@@ -29,7 +29,8 @@ const preparaLinkComprovante = async (cfg) => {
                     }
                 } else {
                     resp.rowsAffected = -1
-                    logEventos(cfg,`ERROR LINK :${resp.err}`,resp)
+                    resp.data = []
+                    logEventos(cfg,`ERROR LINK :${resp.err}`,'preparaLinkComprovante.js') // ,resp)
                 }   
 
             })
